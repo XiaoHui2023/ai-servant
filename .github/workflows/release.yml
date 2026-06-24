@@ -15,15 +15,15 @@ jobs:
     steps:
       - uses: actions/checkout@v4
 
-      - uses: actions/setup-python@v5
-        with:
-          python-version: "3.11"
-
-      - name: Install staticx system dependency
-        run: sudo apt-get update && sudo apt-get install -y patchelf file
-
       - name: Pack static Linux executable
-        run: bash tools/pack.sh src
+        run: >
+          docker run --rm
+          -v "$GITHUB_WORKSPACE:/work"
+          -w /work
+          python:3.11-bullseye
+          bash -lc "apt-get update &&
+          apt-get install -y --no-install-recommends patchelf file &&
+          bash tools/pack.sh src"
 
       - name: Fix artifact ownership
         run: sudo chown -R "$(id -u):$(id -g)" dist
