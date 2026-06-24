@@ -16,7 +16,7 @@ jobs:
       - uses: actions/checkout@v4
 
       - name: Pack in Ubuntu 16.04
-        run: docker run --rm -v "$GITHUB_WORKSPACE:/work" ubuntu:16.04 bash tools/ci_pack_ubuntu16.sh
+        run: docker run --rm -v "$GITHUB_WORKSPACE:/work" -w /work ubuntu:16.04 bash tools/ci_pack_ubuntu16.sh
 
       - name: Fix artifact ownership
         run: sudo chown -R "$(id -u):$(id -g)" dist
