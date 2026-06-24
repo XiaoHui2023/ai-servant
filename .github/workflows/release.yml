@@ -9,14 +9,21 @@ permissions:
   contents: write
 
 jobs:
-  build-linux-ubuntu16:
+  build-linux-static:
     name: Build Linux static executable
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
 
-      - name: Pack in Ubuntu 16.04
-        run: docker run --rm -v "$GITHUB_WORKSPACE:/work" -w /work ubuntu:16.04 bash tools/ci_pack_ubuntu16.sh
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+
+      - name: Install staticx system dependency
+        run: sudo apt-get update && sudo apt-get install -y patchelf file
+
+      - name: Pack static Linux executable
+        run: bash tools/pack.sh src
 
       - name: Fix artifact ownership
         run: sudo chown -R "$(id -u):$(id -g)" dist
@@ -67,8 +74,8 @@ jobs:
   publish-release:
     name: Publish GitHub Release
     runs-on: ubuntu-latest
-    needs: [build-linux-ubuntu16, build-windows]
-    if: always() && needs.build-linux-ubuntu16.result == 'success' && needs.build-windows.result == 'success'
+    needs: [build-linux-static, build-windows]
+    if: always() && needs.build-linux-static.result == 'success' && needs.build-windows.result == 'success'
     steps:
       - uses: actions/checkout@v4
         with:
