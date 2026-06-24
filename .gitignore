@@ -11,3 +11,4 @@ build/
 .cursor/
 .env
 *.log
+example/out/

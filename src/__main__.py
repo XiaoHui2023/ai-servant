@@ -1,6 +1,11 @@
-"""AI Servant CLI 入口。"""
+"""Module entry point."""
+
+from __future__ import annotations
+
+import sys
 
 from cli import main
 
+
 if __name__ == "__main__":
-    main()
+    sys.exit(main())

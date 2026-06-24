@@ -7,7 +7,9 @@ name = "ai-servant"
 version = "0.0.0"
 description = "AI Servant 本地工具"
 requires-python = ">=3.10"
-dependencies = []
+dependencies = [
+    "python-library-configlib>=0.1.0",
+]
 
 [project.optional-dependencies]
 dev = [
@@ -16,7 +18,10 @@ dev = [
 
 [tool.setuptools]
 package-dir = {"" = "src"}
-py-modules = ["cli"]
+py-modules = ["claude", "cli", "config", "prompt", "prompt_markdown"]
+
+[project.scripts]
+ai-servant = "cli:main"
 
 [tool.pytest.ini_options]
 pythonpath = ["src"]
