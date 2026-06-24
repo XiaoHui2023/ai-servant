@@ -39,12 +39,8 @@ apply_staticx_linux() {
   local staticx="$ROOT/.venv/bin/staticx"
   local tmp_out="$ROOT/dist/.${dist_name}-staticx.tmp"
   rm -f "$tmp_out"
-  echo "==> staticx: $pyi_out"
-  if ! "$staticx" "$pyi_out" "$tmp_out"; then
-    rm -f "$tmp_out"
-    echo "==> staticx retry without compression"
-    "$staticx" --no-compress "$pyi_out" "$tmp_out"
-  fi
+  echo "==> staticx --no-compress: $pyi_out"
+  "$staticx" --no-compress "$pyi_out" "$tmp_out"
   mv -f "$tmp_out" "$pyi_out"
   chmod +x "$pyi_out"
 }
